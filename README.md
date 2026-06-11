@@ -44,9 +44,8 @@ flowchart TD
 Each cycle, the orchestrator asks the officiant model to compose a prayer for
 the host. If subagents are enabled, the prayer is then handed to `count`
 subagents, each of which calls the model (optionally a cheaper one) and
-repeats the prayer verbatim `repetitions` times. The repeated output is
-discarded; its token counts are not. All token expenditure from the cycle is
-valued at the relevant model's pricing and appended to the ledger.
+repeats the prayer verbatim `repetitions` times. All token expenditure from
+the cycle is appended to the ledger.
 
 In burn mode the composition step is replaced by filler generation and the
 subagents, if enabled, burn the same budget instead of repeating a prayer.
@@ -87,7 +86,7 @@ Flags:
 | Flag             | Description                                                                 |
 | ---------------- | --------------------------------------------------------------------------- |
 | `-config path`   | Config file path. Defaults to `./openpray.yaml`, then `/etc/openpray.yaml`. |
-| `-religion name` | Override the configured religion for this run.                                  |
+| `-religion name` | Override the configured religion for this run.                              |
 
 ## Configuration
 
@@ -118,21 +117,21 @@ pricing:
 
 ### Options
 
-| Key                     | Default                    | Description                                                                                                           |
-| ----------------------- | -------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `provider`              | `anthropic`                | One of `anthropic`, `openai`, `gemini`.                                                                               |
-| `model`                 | `claude-opus-4-8`          | Model used for each cycle. Determines the per-token valuation of the sacrifice.                                       |
-| `mode`                  | `prayer`                   | `prayer` composes and logs a prayer; `burn` generates and discards tokens with no prayer (see Burn mode).             |
-| `interval`              | `1h`                       | Time between cycles in `serve` mode. A cycle also runs immediately at startup.                                        |
-| `max_tokens`            | `1024`                     | Output token budget per request.                                                                                      |
+| Key                     | Default                    | Description                                                                                                               |
+| ----------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `provider`              | `anthropic`                | One of `anthropic`, `openai`, `gemini`.                                                                                   |
+| `model`                 | `claude-opus-4-8`          | Model used for each cycle. Determines the per-token valuation of the sacrifice.                                           |
+| `mode`                  | `prayer`                   | `prayer` composes and logs a prayer; `burn` generates and discards tokens with no prayer (see Burn mode).                 |
+| `interval`              | `1h`                       | Time between cycles in `serve` mode. A cycle also runs immediately at startup.                                            |
+| `max_tokens`            | `1024`                     | Output token budget per request.                                                                                          |
 | `religion`              | `random`                   | Liturgical style. `random` selects a different religion for each prayer. See `openpray religions`. Not used in burn mode. |
-| `prayer_prompt`         | (generated)                | Override the prayer request sent to the model. The default requests protection for the host by hostname.              |
-| `subagents.enabled`     | `false`                    | Enable the subagent stage (see below).                                                                                |
-| `subagents.count`       | `3`                        | Number of subagents spawned per cycle.                                                                                |
-| `subagents.repetitions` | `10`                       | Number of times each subagent repeats the prayer. Not used in burn mode.                                              |
-| `subagents.model`       | (officiant's model)        | Model used by subagents. A cheaper model is typical.                                                                  |
-| `ledger_path`           | `~/.openpray/ledger.jsonl` | Append-only JSONL record of all cycles.                                                                               |
-| `pricing`               | (built-in registry)        | Per-model token valuations, in USD per million tokens. Overrides built-in entries and covers unknown models.          |
+| `prayer_prompt`         | (generated)                | Override the prayer request sent to the model. The default requests protection for the host by hostname.                  |
+| `subagents.enabled`     | `false`                    | Enable the subagent stage (see below).                                                                                    |
+| `subagents.count`       | `3`                        | Number of subagents spawned per cycle.                                                                                    |
+| `subagents.repetitions` | `10`                       | Number of times each subagent repeats the prayer. Not used in burn mode.                                                  |
+| `subagents.model`       | (officiant's model)        | Model used by subagents. A cheaper model is typical.                                                                      |
+| `ledger_path`           | `~/.openpray/ledger.jsonl` | Append-only JSONL record of all cycles.                                                                                   |
+| `pricing`               | (built-in registry)        | Per-model token valuations, in USD per million tokens. Overrides built-in entries and covers unknown models.              |
 
 ### Religions
 
@@ -156,13 +155,10 @@ Perhaps you think that prayers, when generated by LLM's, are ineffectual or
 counterproductive compared to human prayer. If so, you can still curry
 favour by simply sacrificing tokens directly using `openpray burn`.
 
-Setting `mode: burn` (or running `openpray burn`) skips prayer composition
-entirely. The model is instructed to emit filler output, which is discarded
-unread; only the token counts and their valuation are recorded. If subagents
-are enabled, each subagent performs the same burn concurrently with the same
-token budget.
-
-Burn cycles appear in the ledger with `kind: burn` and no prayer or religion.
+Burn mode skips prayer composition entirely. The model is instructed to emit
+filler output, which is discarded unread; only the token counts and their
+valuation are recorded. If subagents are enabled, each subagent performs
+the same burn concurrently with the same token budget.
 
 ## Sacrifice accounting
 

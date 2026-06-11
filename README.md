@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo.png" alt="OpenPray logo" width="170" />
+</p>
+
 # OpenPray
 
 OpenPray is a daemon that periodically asks an LLM to pray for the server it

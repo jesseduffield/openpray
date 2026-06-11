@@ -14,6 +14,43 @@ defending our servers against AI-powered attackers.
 In times like this, there is nothing left to do but pray. With OpenPray,
 you can get LLM's to do the praying for you, right on your server.
 
+## How it works
+
+```mermaid
+flowchart TD
+    timer["interval timer<br/>(serve mode, default 1h)"] --> orch
+
+    orch["orchestrator"] -->|"compose a prayer for this host<br/>in the configured religion"| officiant["officiant model<br/>(e.g. claude-opus-4-8)"]
+    officiant -->|"prayer + token counts"| orch
+
+    orch -->|"prayer"| sub1
+    orch -->|"prayer"| sub2
+    orch -->|"prayer"| subN
+
+    subgraph congregation["subagents (optional, concurrent)"]
+        sub1["subagent 1<br/>repeats the prayer ×10"]
+        sub2["subagent 2<br/>repeats the prayer ×10"]
+        subN["subagent N<br/>repeats the prayer ×10"]
+    end
+
+    sub1 -->|"token counts"| valuation
+    sub2 -->|"token counts"| valuation
+    subN -->|"token counts"| valuation
+    orch -->|"token counts"| valuation
+
+    valuation["sacrifice valuation<br/>tokens × model price (USD/MTok)"] --> ledger[("append-only ledger<br/>~/.openpray/ledger.jsonl")]
+```
+
+Each cycle, the orchestrator asks the officiant model to compose a prayer for
+the host. If subagents are enabled, the prayer is then handed to `count`
+subagents, each of which calls the model (optionally a cheaper one) and
+repeats the prayer verbatim `repetitions` times. The repeated output is
+discarded; its token counts are not. All token expenditure from the cycle is
+valued at the relevant model's pricing and appended to the ledger.
+
+In burn mode the composition step is replaced by filler generation and the
+subagents, if enabled, burn the same budget instead of repeating a prayer.
+
 ## Supported providers
 
 API keys are supplied via environment variables. OpenPray does not store

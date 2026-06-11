@@ -1,0 +1,46 @@
+# openpray configuration
+# Copy to openpray.yaml (or /etc/openpray.yaml) and adjust.
+
+# Provider: anthropic | openai | gemini
+# API key is read from the environment:
+#   anthropic: ANTHROPIC_API_KEY
+#   openai:    OPENAI_API_KEY
+#   gemini:    GEMINI_API_KEY (or GOOGLE_API_KEY)
+provider: anthropic
+
+# The officiant's model.
+model: claude-opus-4-8
+
+# Mode: "prayer" composes and logs a prayer each cycle; "burn" generates
+# and discards tokens with no prayer — only the expenditure is recorded.
+mode: prayer
+
+# How often to run a cycle.
+interval: 1h
+
+# Token budget for composing each prayer.
+max_tokens: 1024
+
+# Liturgical style. Run `openpray religions` for the full list, or use
+# "random" to draw a fresh denomination each prayer cycle.
+religion: random
+
+# Congregation mode: after the orchestrator composes the prayer, spawn
+# `count` subagents that each repeat it `repetitions` times.
+subagents:
+  enabled: false
+  count: 3
+  repetitions: 10
+  # Congregants may chant on a cheaper model than the officiant.
+  # Leave empty to use the officiant's model.
+  model: claude-haiku-4-5
+
+# Where accumulated devotion is recorded (JSONL, append-only).
+ledger_path: ~/.openpray/ledger.jsonl
+
+# Sacrifice value (USD per million tokens) for models the built-in registry
+# doesn't know about, or to correct stale prices.
+# pricing:
+#   some-new-model:
+#     input_per_mtok: 3.00
+#     output_per_mtok: 15.00

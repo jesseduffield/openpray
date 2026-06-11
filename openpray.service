@@ -1,0 +1,26 @@
+[Unit]
+Description=openpray — periodic LLM intercession for this server
+Documentation=https://github.com/jesseduffield/openpray
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/openpray serve -config /etc/openpray.yaml
+# Bring your own API key; keep it out of the unit file:
+EnvironmentFile=/etc/openpray.env
+Restart=on-failure
+RestartSec=30
+
+# The daemon prays for the system; it does not need to touch it.
+# Note: with DynamicUser there is no home directory — set
+# `ledger_path: /var/lib/openpray/ledger.jsonl` in /etc/openpray.yaml.
+DynamicUser=yes
+StateDirectory=openpray
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+NoNewPrivileges=yes
+
+[Install]
+WantedBy=multi-user.target

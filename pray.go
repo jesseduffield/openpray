@@ -102,7 +102,7 @@ func pray(ctx context.Context, cfg Config, provider Provider) (*PrayerSession, e
 
 // runSubagents spawns the congregation: N concurrent subagents, each asked
 // to repeat the orchestrator's prayer verbatim, R times.
-// The congregation chants under the same rite as the officiant.
+// The congregation chants under the same religion as the officiant.
 func runSubagents(ctx context.Context, cfg Config, provider Provider, model, system, prayer string) []SubagentResult {
 	n := cfg.Subagents.Count
 	reps := cfg.Subagents.Repetitions

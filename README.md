@@ -27,8 +27,7 @@ keys.
 
 Models not present in the built-in pricing registry are assigned a default
 valuation of $1.00/$5.00 per million input/output tokens. This can be
-corrected with the `pricing` configuration map (see below). Accurate pricing
-data ensures the recorded sacrifice values are correct.
+corrected with the `pricing` configuration map (see below).
 
 ## Installation
 
@@ -43,7 +42,7 @@ openpray serve            # run as a daemon on the configured interval
 openpray once             # perform a single cycle and exit
 openpray burn             # burn tokens as a pure sacrifice (no prayer) and exit
 openpray ledger           # print lifetime totals
-openpray religions        # list available rites
+openpray religions        # list available religions
 ```
 
 Flags:
@@ -51,7 +50,7 @@ Flags:
 | Flag             | Description                                                                 |
 | ---------------- | --------------------------------------------------------------------------- |
 | `-config path`   | Config file path. Defaults to `./openpray.yaml`, then `/etc/openpray.yaml`. |
-| `-religion name` | Override the configured rite for this run.                                  |
+| `-religion name` | Override the configured religion for this run.                                  |
 
 ## Configuration
 
@@ -89,7 +88,7 @@ pricing:
 | `mode`                  | `prayer`                   | `prayer` composes and logs a prayer; `burn` generates and discards tokens with no prayer (see Burn mode).             |
 | `interval`              | `1h`                       | Time between cycles in `serve` mode. A cycle also runs immediately at startup.                                        |
 | `max_tokens`            | `1024`                     | Output token budget per request.                                                                                      |
-| `religion`              | `random`                   | Liturgical style. `random` selects a different rite for each prayer. See `openpray religions`. Not used in burn mode. |
+| `religion`              | `random`                   | Liturgical style. `random` selects a different religion for each prayer. See `openpray religions`. Not used in burn mode. |
 | `prayer_prompt`         | (generated)                | Override the prayer request sent to the model. The default requests protection for the host by hostname.              |
 | `subagents.enabled`     | `false`                    | Enable the subagent stage (see below).                                                                                |
 | `subagents.count`       | `3`                        | Number of subagents spawned per cycle.                                                                                |
@@ -103,7 +102,7 @@ pricing:
 The `religion` setting controls the liturgical style of the generated
 prayer: `christian`, `islamic`, `jewish`, `hindu`, `buddhist`, `shinto`,
 `norse`, `hellenic`, `machine-spirit`, `cosmic-horror`,
-`stoic`. The default, `random`, draws a new rite each cycle.
+`stoic`. The default, `random`, draws a new religion each cycle.
 
 ### Subagents
 
@@ -126,7 +125,7 @@ unread; only the token counts and their valuation are recorded. If subagents
 are enabled, each subagent performs the same burn concurrently with the same
 token budget.
 
-Burn cycles appear in the ledger with `kind: burn` and no prayer or rite.
+Burn cycles appear in the ledger with `kind: burn` and no prayer or religion.
 
 ## Sacrifice accounting
 

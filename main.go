@@ -18,7 +18,7 @@ Usage:
   openpray once       perform a single cycle and exit
   openpray burn       burn tokens as a pure sacrifice (no prayer) and exit
   openpray ledger     show lifetime totals
-  openpray religions  list available rites
+  openpray religions  list available religions
 
 Flags:
   -config path     config file (default openpray.yaml, then /etc/openpray.yaml)
@@ -141,7 +141,7 @@ func runCycle(ctx context.Context, cfg Config, provider Provider) error {
 	}
 	fmt.Printf("  officiant:  %s/%s\n", session.Provider, session.Model)
 	if session.Religion != "" {
-		fmt.Printf("  rite:       %s\n", session.Religion)
+		fmt.Printf("  religion:   %s\n", session.Religion)
 	}
 	if n := len(session.Subagents); n > 0 {
 		failed := 0
@@ -169,7 +169,7 @@ func runCycle(ctx context.Context, cfg Config, provider Provider) error {
 }
 
 func listReligions() error {
-	fmt.Println("Available rites (set `religion:` in config, or -religion; \"random\" draws one per prayer):")
+	fmt.Println("Available religions (set `religion:` in config, or -religion; \"random\" draws one per prayer):")
 	fmt.Println()
 	for _, name := range religionNames() {
 		fmt.Printf("  %-15s %s\n", name, religions[name].Description)

@@ -68,7 +68,7 @@ defensive wisdom, and pour a metaphorical libation of tokens.`,
 	},
 	"machine-spirit": {
 		Description: "binary canticles to appease the machine spirit",
-		Directive: `Compose the prayer as a rite of the Cult of the Machine:
+		Directive: `Compose the prayer in the tradition of the Cult of the Machine:
 address the Omnissiah and the server's own machine spirit, praise the
 sanctity of well-formed config files, anoint with sacred oils (figurative),
 and intersperse short binary or hexadecimal canticles.`,
@@ -98,7 +98,7 @@ func religionNames() []string {
 	return names
 }
 
-// resolveReligion picks the rite for this prayer cycle. "random" (or empty)
+// resolveReligion picks the religion for this prayer cycle. "random" (or empty)
 // draws a fresh denomination each time — ecumenical coverage maximizes the
 // chance that at least one of them is listening.
 func resolveReligion(name string) (string, Religion, error) {
